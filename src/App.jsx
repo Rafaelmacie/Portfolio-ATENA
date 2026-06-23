@@ -76,9 +76,9 @@ const MODULOS_DATA = [
           { nome: "Controle de Dados Bancários", status: "Operacional" },
           { nome: "Controle de Integralizações", status: "Operacional" },
           { nome: "Gestão de sobras e fundos", status: "Operacional" },
-          { nome: "Livro-Caixa", status: "Em Planejamento" },
+          { nome: "Livro-Caixa", status: "Operacional" },
+          { nome: "Painel Financeiro", status: "Operacional" },
           { nome: "Módulo fiscal", status: "Em Planejamento" },
-          { nome: "Painel Financeiro", status: "Pendente" },
         ],
         imagens: [
           { src: "telas/integralizacao2.png", caption: "Gestão de Integralizações" },
