@@ -45,6 +45,21 @@ const MODULOS_DATA = [
           { src: "/telas/cooperadosOcult.png", caption: "Gestão de Cooperados" },
           { src: "telas/Demanda.png", caption: "Gestão de Produtos (Nova Funcionalidade)" }
         ]
+      },
+      {
+        id: "2.0.0",
+        data: "20/10/2026",
+        features: [
+          { nome: "Gestão de Cooperados", status: "Operacional" },
+          { nome: "Gestão de Produtos", status: "Operacional" },
+          { nome: "Gestão de Clientes", status: "Operacional" },
+          { nome: "Gestão de Demandas", status: "Operacional" },
+          { nome: "Painel Administrativo", status: "Operacional" },
+        ],
+        imagens: [
+          { src: "/telas/cooperadosOcult.png", caption: "Gestão de Cooperados" },
+          { src: "telas/Demanda.png", caption: "Gestão de Produtos (Nova Funcionalidade)" }
+        ]
       }
     ]
   },
@@ -79,6 +94,23 @@ const MODULOS_DATA = [
           { nome: "Livro-Caixa", status: "Operacional" },
           { nome: "Painel Financeiro", status: "Operacional" },
           { nome: "Módulo fiscal", status: "Em Planejamento" },
+        ],
+        imagens: [
+          { src: "telas/integralizacao2.png", caption: "Gestão de Integralizações" },
+          { src: "telas/fundos.png", caption: "Gestão de Integralizações" },
+          { src: "telas/calculoSobras.png", caption: "Gestão de Integralizações" },
+        ]
+      },
+      {
+        id: "2.0.0",
+        data: "20/10/2026",
+        features: [
+          { nome: "Controle de Dados Bancários", status: "Operacional" },
+          { nome: "Controle de Integralizações", status: "Operacional" },
+          { nome: "Gestão de sobras e fundos", status: "Operacional" },
+          { nome: "Livro-Caixa", status: "Operacional" },
+          { nome: "Painel Financeiro", status: "Operacional" },
+          { nome: "Módulo fiscal", status: "Em Desenvolvimento" },
         ],
         imagens: [
           { src: "telas/integralizacao2.png", caption: "Gestão de Integralizações" },
@@ -123,6 +155,20 @@ const MODULOS_DATA = [
           { src: "/telas/landingpage.png", caption: "Tela Inicial do Sistema" },
           { src: "/telas/gestaoUsers.png", caption: "Tela de Gestão de usuários" },
         ]
+      },
+      {
+        id: "2.0.0",
+        data: "20/10/2026",
+        features: [
+          { nome: "Gestão de Acessos e Perfis", status: "Operacional" },
+          { nome: "Gestão dos dados da cooperativa", status: "Em Desenvolvimento" },
+          { nome: "Administração da Página Principal", status: "Operacional" },
+          { nome: "Dashboards de Performance", status: "Operacional" }
+        ],
+        imagens: [
+          { src: "/telas/landingpage.png", caption: "Tela Inicial do Sistema" },
+          { src: "/telas/gestaoUsers.png", caption: "Tela de Gestão de usuários" },
+        ]
       }
     ]
   },
@@ -155,6 +201,19 @@ const MODULOS_DATA = [
           { nome: "Ranking de scores", status: "Pendente" }
         ],
         imagens: []
+      },
+      {
+        id: "0.0.3",
+        data: "20/10/2026",
+        features: [
+          { nome: "Manifestação de Interesse", status: "Em Planejamento" },
+          { nome: "Visualização de Fichas e Termos Próprios", status: "Em Planejamento" },
+          { nome: "Gerenciamento de Produção", status: "Em Planejamento" },
+          { nome: "LLM especialista em agropecuária", status: "Em Desenvolvimento" },
+          { nome: "Rastreabilidade de folhas de pagamento", status: "Em Planejamento" },
+          { nome: "Ranking de scores", status: "Pendente" }
+        ],
+        imagens: [{ src: "/telas/inicioCooperado.png", caption: "Tela inicial do módulo dos cooperados" }]
       }
     ]
   },
@@ -200,7 +259,7 @@ const StatusBadge = ({ status }) => {
 };
 
 // COMPONENTE: Carrossel Reutilizável
-const ImageCarousel = ({ images, onExpand, heightClass }) => {
+const ImageCarousel = ({ images, onExpand, heightClass, isMobile }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Zera o índice sempre que o array de imagens mudar (ex: troca de versão)
@@ -244,7 +303,10 @@ const ImageCarousel = ({ images, onExpand, heightClass }) => {
           key={currentIndex}
           src={images[currentIndex].src}
           alt={images[currentIndex].caption}
-          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          className={`w-full h-full transition-transform duration-700 group-hover:scale-105 ${isMobile
+              ? 'object-contain py-4 bg-slate-800' // Para mobile: exibe a imagem inteira com um fundo escuro elegante
+              : 'object-cover object-top'          // Para web: preenche o container
+            }`}
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 to-transparent pt-16 pb-6 px-8 text-white opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
           <p className="text-sm md:text-base font-semibold tracking-wide">{images[currentIndex].caption}</p>
@@ -276,6 +338,9 @@ const ModuloSection = ({ modulo, onExpand }) => {
   // O estado agora mora na seção, controlando o dropdown e o carrossel simultaneamente
   const [selectedVersionId, setSelectedVersionId] = useState(modulo.versoes[modulo.versoes.length - 1].id);
   const currentVersao = modulo.versoes.find(v => v.id === selectedVersionId) || modulo.versoes[modulo.versoes.length - 1];
+
+  // Identifica se é um módulo mobile baseado no ID ou na tecnologia descrita
+  const isMobileModule = modulo.id === 'cooperado' || modulo.tech.includes('Mobile-First');
 
   return (
     <section id={modulo.id} className="min-h-screen w-full flex flex-col justify-center py-20 border-t border-slate-200/60 px-8 md:px-16 lg:px-24 xl:px-32">
@@ -338,7 +403,12 @@ const ModuloSection = ({ modulo, onExpand }) => {
       </div>
 
       {/* O carrossel agora recebe as imagens da versão atualmente selecionada no dropdown */}
-      <ImageCarousel images={currentVersao.imagens} onExpand={onExpand} heightClass="h-[350px] md:h-[450px] lg:h-[550px]" />
+      <ImageCarousel
+        images={currentVersao.imagens}
+        onExpand={onExpand}
+        heightClass="h-[350px] md:h-[450px] lg:h-[550px]"
+        isMobile={isMobileModule}
+      />
     </section>
   );
 };
@@ -390,7 +460,7 @@ export default function PortfolioFape() {
               <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg border border-slate-100 flex items-center justify-center bg-white shadow-sm overflow-hidden p-1 shrink-0">
                 <img src="/telas/logo2.png" alt="FAPE" className="w-full h-full object-contain" />
               </div>
-              {!isSidebarCollapsed && <div className="flex flex-col animate-in fade-in duration-300 overflow-hidden whitespace-nowrap"><h1 className="font-extrabold text-emerald-600 text-base md:text-lg tracking-widest leading-tight">COOPERATIVASCE</h1></div>}
+              {!isSidebarCollapsed && <div className="flex flex-col animate-in fade-in duration-300 overflow-hidden whitespace-nowrap"><h1 className="font-extrabold text-emerald-600 text-base md:text-lg tracking-widest leading-tight">A.T.E.N.A.</h1></div>}
             </div>
           </div>
 
@@ -411,8 +481,8 @@ export default function PortfolioFape() {
           <div className="w-full pb-32">
             <section id="home" className="min-h-[85vh] w-full flex flex-col xl:flex-row items-center justify-center py-16 px-8 md:px-16 lg:px-24 gap-12 lg:gap-16">
               <div className="flex-1 w-full flex flex-col items-start text-left">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight w-full">Cooperativas<span className="text-emerald-600">CE</span></h2>
-                <h3 className="text-4xl md:text-5l lg:text-6l font-extrabold text-slate-900 mb-6 leading-tight tracking-tight w-full">O sistema do futuro <span className="text-emerald-600">cooperativista.</span></h3>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight w-full">A.T.E.N.A.</h2>
+                <h3 className="text-4xl md:text-2xl lg:text-2x1 font-extrabold text-slate-900 mb-6 leading-tight tracking-tight w-full">Sistema de Apoio Técnico e Estratégico em Negócios Agropecuários para <span className="text-emerald-600">Cooperativas de Agricultura Familiar.</span></h3>
                 <p className="text-base md:text-lg text-slate-600 leading-relaxed w-full">Explore a documentação viva do Sistema de Gerenciamento para Cooperativas. Navegue pelos painéis para entender a estrutura, o design e o progresso das funcionalidades desenvolvidas.</p>
               </div>
               <div className="flex-1 w-full xl:max-w-xl relative mt-8 xl:mt-0">
