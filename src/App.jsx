@@ -241,6 +241,7 @@ const MODULOS_DATA = [
 const CAROUSEL_IMAGES_HOME = [
   { src: "/telas/sede.png", caption: "Sede da Cooperativa FAPE" },
   { src: "/telas/Equipe.png", caption: "Nossa Equipe de 5 Membros" },
+  { src: "/telas/Lívia.jpeg", caption: "Lívia" },
 ];
 
 const StatusBadge = ({ status }) => {
